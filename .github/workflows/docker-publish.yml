@@ -1,0 +1,25 @@
+name: Build and Push Dockerimage
+on:
+  push:
+    branches: ['main']
+jobs:
+    Build-push:
+        runs on : Ubuntu-latest
+steps:
+   -name: checkout-code
+   uses: actions/checkout@v3
+
+   -name: login into docker-hub
+   uses: docker/login-actions@v3
+   with:
+       username: ${{SECRETS.DOCKER_USERNAME}}
+       password: ${{SECRETS.DOCKER_TOKEN}}
+
+   -name: Build Dockerimage
+   uses: docker build -t ${{SECRETS.DOCKER_USERNAME}}/python-app:latest
+
+   -name: push Dockerimage
+   uses: docker push ${{SECRETS.DOCKER_USERNAME}}/python-app:latest
+
+
+
